@@ -2,7 +2,12 @@ package model;
 
 public class User {
 	private String id, name, passwd;
-	private String authority;
+	private String authority; // "user" / "admin"
+	
+	public User(String id, String passwd) {
+		this.id = id;
+		this.passwd = passwd;
+	}
 	
 	public User(String id, String passwd, String name) {
 		this.id = id;

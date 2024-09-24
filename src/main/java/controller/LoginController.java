@@ -34,21 +34,20 @@ public class LoginController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String id = request.getParameter("id");
 		String passwd = request.getParameter("passwd");
-		String name = request.getParameter("name");
-		User input = new User(id, passwd, name);
+		User input = new User(id, passwd);
 		System.out.println(id + ", " + passwd + " Login post() >> check login");
 		
 		Optional<User> user = loginService.isUser(input);
 		if(user.isEmpty()) {
 			// login fail => 현재 : adduser
-			loginService.addUser(input);
-			System.out.println("login fail");
+			System.out.println("login fail return login.jsp + err");
+			request.setAttribute("err", "login fail");
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 		else {
 			// login success
 			input = user.get();
-			System.out.println("login success");
+			System.out.println("login success => session => redirect Main");
 			
             // session 발급 밑 정보 저장
 			request.getSession().setAttribute("name", input.getName());

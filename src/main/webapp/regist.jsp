@@ -7,12 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form method="post" action="Login">
+	Register<br>
+	<form action="Regist" method="post">
 		id : <input type="text" name="id"> <br>
 		passwd : <input type="password" name="passwd"> <br>
-		<button type="submit">로그인</button>
+		name : <input type="text" name="name"><br>
+		<button type="submit"> Register </button>
 	</form>
 	${err }
-	<a href="Regist">regist</a>
 </body>
 </html>

@@ -14,11 +14,14 @@ public class MainController extends HttpServlet {
 	// session이 있는지 확인
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession(false) == null) {
+			System.out.println("main get() => ckeck session");
 			// session이 없음 => redirect Login 
+			System.out.println("no session => redirect Login");
 			response.sendRedirect("/Login");
 		}
 		
 		// session 이상 없음
+		System.out.println("session ok => return main.jsp");
 		request.setAttribute("name", request.getSession().getAttribute("name"));
 		request.getRequestDispatcher("main.jsp").forward(request, response);
 	}
