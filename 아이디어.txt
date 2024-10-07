@@ -1,1 +1,17 @@
-map api : D3ED6D88-FE33-3EA8-A41A-C9669E56C2E3
+Project
+	java : 18
+	Dynamic Web Module : 6.0
+	incoding : utf-8
+사용 tomcat-10.1.30
+외부 라이브러리 위치 : \apache-tomcat-10.1.30\lib
+	1. mysql-connector-j-9.0.0.jar (sql 연동)
+	2. proj4j-1.2.2.jar (좌표 변환)
+	3. jaxb-api-2.4.0-b180830.0359 (xml to java class) (사용여부 미정)
+사용 api :
+	1. 2d지도 api
+		https://www.vworld.kr/dev/v4dv_opn2dmap2guide_s001.do
+		api key : D3ED6D88-FE33-3EA8-A41A-C9669E56C2E3
+	2. 헬스장 위치 api
+		https://www.localdata.go.kr/data/dataView.do
+		api key : qq2yLQwtDqT12WhCOwmcJk9/kNVcaP9bARvGXW8ogjU=
+

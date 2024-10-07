@@ -9,7 +9,7 @@ import repository.MapRepository;
 @WebListener
 public class MainListener implements ServletContextListener {
 
-    private LoginRepository loginRepository;
+    //private LoginRepository loginRepository;
     private MapRepository mapRepository;
     
     public MainListener() {

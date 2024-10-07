@@ -47,11 +47,11 @@
         vmap.addLayer(markerLayer);
         for(co of coordinate){
         	vw.ol3.markerOption = {
-        		    x : 191779.346985955 ,
-        		    y : 455405.316699549 ,
-        		    epsg : "EPSG:3857",
-        		    title : '테스트마커1',
-        		    contents : '테스트마커1 본문내용',
+        		    x : co.x ,
+        		    y : co.y ,
+        		    epsg : "EPSG:4326",
+        		    title : co.name,
+        		    contents : co.site,
         		    iconUrl : '//map.vworld.kr/images/ol3/marker_blue.png',
         		  text : {
         		    offsetX: 0.5, //위치설정
@@ -59,7 +59,7 @@
         		    font: '12px Calibri,sans-serif',
         		    fill: {color: '#000'},
         		    stroke: {color: '#fff', width: 2},
-        		    text: '테스트마커1'
+        		    text: co.name
         		  },
         		  attr: {"id":"maker01","name":"속성명1"}  
         		   };
