@@ -1,58 +1,54 @@
 package service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import model.User;
 import repository.LoginRepository;
 
 public class LoginService {
-	private ArrayList<User> userDatabase = new ArrayList<>();
 	private LoginRepository loginRepository;
 	
 	public LoginService() {
-		userDatabase.add(new User("id","passwd","name"));
-		//try {
-			loginRepository = new LoginRepository();
-//		}catch (Exception e) {
-//			System.out.println("Login Service >> can not create LoginRepository");
-//		}
+		loginRepository = new LoginRepository();
 	}
 	
-	public boolean addUser(User user) { // regist용
-		if(checkById(user)){
-			// already same id is exist
+	// 회원 가입
+	public boolean addUser(User user) { 
+		if(checkById(user.getId())){
+			// 이미 같은 ID가 존재함
 			return false;
-		}
-		else {
-			// passwd가 10자리 이하인지 확인
-			
-			//authority = "user" 설정
+		} else {
+			// 비밀번호가 10자리 이하인지 확인 (필요시 추가)
+			// 권한 "user" 설정
 			user.setAuthority("user");
 						
-			userDatabase.add(user);
-			
+			// DB에 사용자 추가
 			loginRepository.addUser(user);
 			
-			System.out.println("LoginService >> regist success");
-			userDatabase.stream().forEach(u->{
-				System.out.println(u.getId()+", "+u.getPasswd());
-			});
+			System.out.println("LoginService >> 등록 성공");
 			return true;
 		}
 	}
 	
-	public Optional<User> isUser(User input) { // login 확인용
-		System.out.println("loginService >> isUser() >> check function");
-		return userDatabase.stream().filter(u->{
-			System.out.println(u.getId() + "," + u.getPasswd()+","+input.getId()+","+input.getPasswd());
-			return (u.getId().equals(input.getId()) && u.getPasswd().equals(input.getPasswd()) );
-		}).findAny();
+	// 로그인 확인
+	public Optional<User> isUser(User input) { 
+		System.out.println("LoginService >> isUser() >> 확인 중");
+
+		// ID로 사용자 정보 조회
+		Optional<User> dbUser = loginRepository.getUserById(input.getId());
+
+		// ID가 존재하고 비밀번호가 일치하는지 확인
+		if(dbUser.isPresent() && dbUser.get().getPasswd().equals(input.getPasswd())) {
+			System.out.println("LoginService >> 로그인 성공");
+			return dbUser;
+		} else {
+			System.out.println("LoginService >> 로그인 실패");
+			return Optional.empty();
+		}
 	}
 	
-	private boolean checkById(User input){// regist => id가 같은 user가 있는지 확인 있다면 true
-		return !(userDatabase.stream().filter(u->{
-			return (u.getId().equals(input.getId()));
-		}).findAny().isEmpty());
+	// ID 중복 확인
+	private boolean checkById(String id){ 
+		return loginRepository.getUserById(id).isPresent();
 	}
 }

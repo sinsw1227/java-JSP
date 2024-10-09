@@ -40,7 +40,7 @@ public class LoginController extends HttpServlet {
 			// login fail => 현재 : adduser
 			System.out.println("login fail return login.jsp + err");
 			request.setAttribute("err", "login fail");
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
 		else {
 			// login success
@@ -51,7 +51,7 @@ public class LoginController extends HttpServlet {
 			request.getSession().setAttribute("name", input.getName());
 			
 			// send main page
-			response.sendRedirect("Main");
+			response.sendRedirect("/Project");
 		}
 	}
 
