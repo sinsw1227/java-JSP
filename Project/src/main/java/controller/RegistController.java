@@ -1,7 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.util.Optional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,12 +10,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
+import service.EmailService;
 import service.LoginService;
 
 @WebServlet("/Regist")
 public class RegistController extends HttpServlet {
-	//private static final long serialVersionUID = 1L;
-	private LoginService loginService = new LoginService();
+	private static final long serialVersionUID = 1L;
+	private LoginService loginService;
+	private EmailService emailService;
 
 //    public RegistController() {
 //        super();
@@ -27,24 +30,42 @@ public class RegistController extends HttpServlet {
 		request.getRequestDispatcher("regist.jsp").forward(request, response);
 	}
 
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		User input = (new ObjectMapper()).readValue(request.getReader().readLine(), User.class);
+		System.out.println(input.getId()+", "+input.getPasswd()+"," +input.getName()+ ","+input.getEmail()+" Regist put() => check id");
+		
+		loginService = new LoginService();
+		emailService = new EmailService();
+
+		if(loginService.isUser(input).isEmpty()) {
+			// 동일 id 없음 => email 발송
+			emailService.sendEmail(input);
+			System.out.println("isUser() Empty => send Email + return 200");
+			// 응답 상태 200 OK
+            response.setStatus(HttpServletResponse.SC_OK);
+		}else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String id = request.getParameter("id");
-		String passwd = request.getParameter("password");
-		String name = request.getParameter("name");
-		System.out.println(id+", "+passwd+"," +name+ " Regist post() => check id");
-		User input = new User(id, passwd, name);
-
-		if(loginService.addUser(input)) {
-			// regist 성공
-			System.out.println("id ok => regist=> redirect Login");
-			response.sendRedirect("Login");
+		User input = (new ObjectMapper()).readValue(request.getReader().readLine(), User.class);
+		System.out.println(input.getId()+", "+input.getPasswd()+"," +input.getName()+ ","+input.getEmail()+","+input.getKey()+" Regist post() => check emailKey");
+		
+		emailService = new EmailService();
+		loginService = new LoginService();
+		if(emailService.checkByKeyCode(input, input.getKey())) {
+			// email success => update database + return 200
+			System.out.println("emailKey is success => update database + return 200");
+			loginService.addUser(input);
+			response.setStatus(HttpServletResponse.SC_OK);
 		}
 		else {
-			// regist 불가능 중복 id
-			System.out.println("duplicated id => return regist.jsp + err");
-			request.setAttribute("err", "duplicated id");
-			request.getRequestDispatcher("regist.jsp").forward(request, response);
+			System.out.println("emailKey is not exists => return 400");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
+		
 	}
 }

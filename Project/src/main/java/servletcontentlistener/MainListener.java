@@ -1,5 +1,8 @@
 package servletcontentlistener;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +66,29 @@ public class MainListener implements ServletContextListener {
     	sce.getServletContext().setAttribute("siteCodeMap", siteCodeMap);
     	
     	new CoordinateService();
+    	
+//    	//open port goole email
+//    	int port = 465;  // 열고자 하는 포트 번호
+//        String command = "netsh advfirewall firewall add rule name=\"Open Port " + port + "\" dir=in action=allow protocol=TCP localport=" + port;
+//
+//        try {
+//            Process process = Runtime.getRuntime().exec(command);
+//            process.waitFor();
+//
+//            // 명령어 실행 결과 출력
+//            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    System.out.println(line);
+//                }
+//            }
+//
+//            System.out.println(port+"port open");
+//
+//        } catch (IOException | InterruptedException e) {
+//            System.err.println("fail to open port");
+//            e.printStackTrace();
+//        }
     }
 	
 }

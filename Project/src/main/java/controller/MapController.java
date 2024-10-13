@@ -11,9 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.MapService;
 
-/**
- * Servlet implementation class MapController
- */
 @WebServlet("/Map")
 public class MapController extends HttpServlet {
 	private static final long serialVersionUID = 1L;

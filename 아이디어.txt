@@ -15,6 +15,5 @@ Project
 		http://openapi
 		api key : 674e4358466c6b6837304941454e54
 		좌표계 : EPSG:2097
-
-Login post => LoginService checkbyid() => Loginrepository : return Optional<User>
-					=> return UserName, UserId (User값을 모두 반환할 필요가 있나?)
+	4. 소셜 로그인 google
+		api key : AIzaSyCWaUtyCrFkMdjJxFB9NkIjn0-vJ21dWvQ

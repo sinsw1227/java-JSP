@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/User")
 public class UserController extends HttpServlet {
-	//private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	// session이 있는지 확인
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,26 +1,32 @@
 package model;
 
 public class User {
-	private String id, name, passwd;
+	private String id, name, passwd, email;
 	private String authority; // "user" / "admin"
+	private String key;
 	
-	public User(String id, String passwd) {
-		this.id = id;
-		this.passwd = passwd;
+	//check id passwd  >> login 
+	public User() {
 	}
 	
-	public User(String id, String passwd, String name) {
+	// create User
+	public User(String id, String passwd, String name, String email) {
 		this.id = id;
 		this.passwd = passwd;
 		this.name = name;
+		this.email = email;
+		authority = "user";
 	}
-	public User(String id, String passwd, String name, String au) {
+	
+	//get from DataBase
+	public User(String id, String passwd, String name, String au,String email) {
 		this.id = id;
 		this.passwd = passwd;
 		this.name = name;
 		this.authority = au;
+		this.email = email;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -45,8 +51,21 @@ public class User {
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public String getKey() {
+		return key;
+	}
 	@Override
 	public String toString() {
-		return "id : "+id +", passwd : "+passwd+", name : " + name;
+	    return "id : " + id + ", passwd : " + passwd + ", name : " + name + ", email : " + email + ", authority : " + authority;
 	}
+
 }
