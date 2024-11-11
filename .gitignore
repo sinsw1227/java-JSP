@@ -1,0 +1,10 @@
+# eclipse 
+.metadata
+Servers/
+.settings/
+*.log
+*.class
+.classpath
+.project
+
+WebProjectClass/
