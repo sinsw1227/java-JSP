@@ -13,16 +13,12 @@ import model.User;
 import service.EmailService;
 import service.LoginService;
 
-@WebServlet("/Regist")
+@WebServlet("/RegistPage")
 public class RegistController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LoginService loginService;
 	private EmailService emailService;
 
-//    public RegistController() {
-//        super();
-//        // TODO Auto-generated constructor stub
-//    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// return regist.jsp
@@ -38,6 +34,8 @@ public class RegistController extends HttpServlet {
 		loginService = new LoginService();
 		emailService = new EmailService();
 
+		// token이 있다면 id와 email이 이전과 같은지 확인 => 같다면 passwd, name변경 기능을 구현
+		
 		if(loginService.isUser(input).isEmpty()) {
 			// 동일 id 없음 => email 발송
 			emailService.sendEmail(input);

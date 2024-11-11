@@ -1,7 +1,6 @@
 package repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,17 +11,12 @@ import model.User;
 public class LoginRepository {
     Connection conn;
     
-    private void getConn() throws SQLException {
-        // MySQL 데이터베이스 연결
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/jsp?CHARACTER SET utf8", "jsp", "dongyang");
-    }
-    
     // 회원 추가
     // SQL: INSERT INTO user (id, passwd, name, authority, email) VALUES (?, ?, ?, ?, ?);
     public boolean addUser(User user) {
         boolean re = false;
         try {
-            getConn();
+            conn = repository.getConnection();
             PreparedStatement statement = conn.prepareStatement("INSERT INTO user (id, passwd, name, authority, email) VALUES (?, ?, ?, ?, ?);");
             statement.setString(1, user.getId());
             statement.setString(2, user.getPasswd());
@@ -47,7 +41,7 @@ public class LoginRepository {
     public Optional<User> getUserById(String id) {
         Optional<User> user = Optional.empty();
         try {
-            getConn();
+        	conn = repository.getConnection();
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM user WHERE id = ?;");
             statement.setString(1, id);
             

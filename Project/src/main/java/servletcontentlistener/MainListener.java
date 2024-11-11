@@ -34,6 +34,7 @@ public class MainListener implements ServletContextListener {
 			Class.forName("com.mysql.cj.jdbc.Driver");	
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			System.out.println("MainListener >> contextInitilized() >> Class.forNmae() >>fail cannot get jdbc dirver ");
 		}
     

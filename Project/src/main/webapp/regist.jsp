@@ -23,7 +23,7 @@
             };
 
             try {
-                const response = await fetch('Regist', {
+                const response = await fetch('RegistPage', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -62,7 +62,7 @@
             };
 
             try {
-                const response = await fetch('Regist', {
+                const response = await fetch('RegistPage', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -72,7 +72,7 @@
 
                 if (response.ok) {
                     alert('회원가입이 완료되었습니다.');
-                    window.location = "Login"
+                    window.location = "LoginPage"
                 } else {
                     alert('회원가입 중 오류가 발생했습니다. 이메일 키를 확인하세요.');
                 }

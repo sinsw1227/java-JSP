@@ -18,7 +18,7 @@ import model.User;
 import service.LoginService;
 import service.TokenService;
 
-@WebServlet("/Login")
+@WebServlet("/LoginPage")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LoginService loginService = new LoginService();

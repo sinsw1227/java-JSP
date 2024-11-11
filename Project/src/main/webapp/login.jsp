@@ -21,7 +21,7 @@
 		if( user != null){
 			%>
 			alert("already login")
-			window.location = "/Project" //이전 화면으로 되돌리기 변경 필요
+			window.location = "/Project/MainPage" //이전 화면으로 되돌리기 변경 필요
         	<%
 		}
 	%>
@@ -29,7 +29,7 @@
 
 </script>
 <body>
-	<form method="post" action="Login" id="login-form">
+	<form method="post" action="LoginPage" id="login-form">
 		id : <input type="text" name="id" id="id"> <br>
 		passwd : <input type="password" name="passwd" id="passwd"> <br>
 		<button type="submit">로그인</button>
@@ -52,7 +52,7 @@
         const passwd = document.getElementById('passwd').value;
 
         // 서버에 로그인 요청 (헤더에 ID와 패스워드를 포함하지 않고, JSON 형식으로 요청)
-        const response = await fetch('Login', {
+        const response = await fetch('LoginPage', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,7 +62,7 @@
 
         if (response.ok) {
             alert('Login successful!');
-            window.location.href = '/Project';  // 인증된 사용자 화면으로 리다이렉트
+            window.location.href = '/Project/MainPage';  // 인증된 사용자 화면으로 리다이렉트
         } else if (response.status === 400) {  // 잘못된 요청 처리
             document.getElementById('err').textContent = 'ID 또는 패스워드가 일치하지 않습니다.';
         } else {
@@ -74,7 +74,7 @@
     	var access_token = googleUser.getAuthResponse().access_token
     	$.ajax({
         	// people api를 이용하여 프로필 및 생년월일에 대한 선택동의후 가져온다.
-    		url: 'localhost:8080/Project/Login'
+    		url: 'localhost:8080/Project/LoginPage'
             // key에 자신의 API 키를 넣습니다.
     		, data: {personFields:'birthdays', key:'AIzaSyCWaUtyCrFkMdjJxFB9NkIjn0-vJ21dWvQ', 'access_token': access_token}
     		, method:'GET'

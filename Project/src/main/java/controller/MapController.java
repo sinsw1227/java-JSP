@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.MapService;
 
-@WebServlet("/Map")
+@WebServlet("/MapPage")
 public class MapController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MapService mapService;
@@ -22,11 +22,11 @@ public class MapController extends HttpServlet {
 //        // TODO Auto-generated constructor stub
 //    }
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		System.out.println("MapController init()");
-	}
+//	@Override
+//	public void init(ServletConfig config) throws ServletException {
+//		super.init(config);
+//		System.out.println("MapController init()");
+//	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//return map.jsp
@@ -55,9 +55,5 @@ public class MapController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// post 아직 없음
 	}
-
-//	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//	}
 
 }

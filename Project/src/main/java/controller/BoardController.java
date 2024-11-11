@@ -14,10 +14,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Post;
 
 
 
-@WebServlet("/Board")
+@WebServlet("/BoardPage")
 public class BoardController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -74,45 +75,4 @@ public class BoardController extends HttpServlet {
 
         response.sendRedirect("Board"); // 게시글 목록으로 리다이렉트
     }
-}
-
-// 게시글 클래스
-class Post {
-    private int id;
-    private String title;
-    private String content;
-    private String author;
-    private java.sql.Timestamp createdAt;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public String getAuthor() {
-		return author;
-	}
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-	public java.sql.Timestamp getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(java.sql.Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-
-    
 }

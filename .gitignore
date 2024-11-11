@@ -6,3 +6,5 @@ Servers/
 *.class
 .classpath
 .project
+
+WebProjectClass/
