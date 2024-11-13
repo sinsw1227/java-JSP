@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class repository {
-	public static Connection getConnection() {
+public class Repository {
+	public Connection getConnection() {
         // MySQL 데이터베이스 연결
         try {
 			return DriverManager.getConnection("jdbc:mysql://localhost:3306/jsp?CHARACTER SET utf8", "jsp", "dongyang");

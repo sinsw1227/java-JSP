@@ -1,6 +1,8 @@
 package servletcontentlistener;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -18,18 +20,16 @@ public class MainListener implements ServletContextListener {
     public MainListener() {
         // TODO Auto-generated constructor stub
     }
-
-	/**
-     * @see ServletContextListener#contextDestroyed(ServletContextEvent)
-     */
-    public void contextDestroyed(ServletContextEvent sce)  { 
-		
+    
+    public void contextDestroyed(ServletContextEvent sce)  {
+    	
     }
 
     
     public void contextInitialized(ServletContextEvent sce)  { 
-//      // 서버가 시작 할때
- 	
+        // 서버가 시작 할때
+    	
+    	//Class.forName()
     	try {	
 			Class.forName("com.mysql.cj.jdbc.Driver");	
 		} catch (ClassNotFoundException e) {
@@ -38,6 +38,7 @@ public class MainListener implements ServletContextListener {
 			System.out.println("MainListener >> contextInitilized() >> Class.forNmae() >>fail cannot get jdbc dirver ");
 		}
     
+    	// siteCode Map
     	Map<String, String> siteCodeMap = new HashMap<String, String>();
     	siteCodeMap.put("종로구", "JR");
     	siteCodeMap.put("중구", "JG");
@@ -68,28 +69,7 @@ public class MainListener implements ServletContextListener {
     	
     	new CoordinateService();
     	
-//    	//open port goole email
-//    	int port = 465;  // 열고자 하는 포트 번호
-//        String command = "netsh advfirewall firewall add rule name=\"Open Port " + port + "\" dir=in action=allow protocol=TCP localport=" + port;
-//
-//        try {
-//            Process process = Runtime.getRuntime().exec(command);
-//            process.waitFor();
-//
-//            // 명령어 실행 결과 출력
-//            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-//                String line;
-//                while ((line = reader.readLine()) != null) {
-//                    System.out.println(line);
-//                }
-//            }
-//
-//            System.out.println(port+"port open");
-//
-//        } catch (IOException | InterruptedException e) {
-//            System.err.println("fail to open port");
-//            e.printStackTrace();
-//        }
+    	String imgURL = sce.getServletContext().getRealPath("/").split("\\.")[0] + "Project\\src\\main\\webapp\\images\\";
+    	sce.getServletContext().setAttribute("imgURL", imgURL);
     }
-	
 }

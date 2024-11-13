@@ -33,8 +33,6 @@ public class RegistController extends HttpServlet {
 		
 		loginService = new LoginService();
 		emailService = new EmailService();
-
-		// token이 있다면 id와 email이 이전과 같은지 확인 => 같다면 passwd, name변경 기능을 구현
 		
 		if(loginService.isUser(input).isEmpty()) {
 			// 동일 id 없음 => email 발송

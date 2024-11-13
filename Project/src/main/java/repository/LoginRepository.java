@@ -9,8 +9,12 @@ import java.util.Optional;
 import model.User;
 
 public class LoginRepository {
-    Connection conn;
+    private Connection conn;
+    private Repository repository;
     
+    public LoginRepository(){
+    	repository = new Repository();
+    }
     // 회원 추가
     // SQL: INSERT INTO user (id, passwd, name, authority, email) VALUES (?, ?, ?, ?, ?);
     public boolean addUser(User user) {
