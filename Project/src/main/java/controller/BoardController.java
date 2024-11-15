@@ -1,78 +1,63 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Post;
+import model.Board;
 
-
-
-@WebServlet("/BoardPage")
+@WebServlet("/BoardPage/*")
 public class BoardController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    // DB 연결 정보
-    private final String DB_URL = "jdbc:mysql://localhost:3306/jsp";
-    private final String DB_USER = "jsp";
-    private final String DB_PASS = "dongyang";
-
-    // 게시글 목록 조회
+	
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Post> posts = new ArrayList<>();
-        String sql = "SELECT * FROM board ORDER BY created_at DESC"; // 최신 게시글부터 조회
-
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            while (rs.next()) {
-                Post post = new Post();
-                post.setId(rs.getInt("id"));
-                post.setTitle(rs.getString("title"));
-                post.setContent(rs.getString("content"));
-                post.setAuthor(rs.getString("author"));
-                post.setCreatedAt(rs.getTimestamp("created_at"));
-                posts.add(post);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        String action = request.getPathInfo();
+        
+        System.out.println("BoardPage get() >> action:"+action);
+        
+        if (action == null || action.equals("/")) {
+            // 게시판 목록 페이지로 이동
+        	ArrayList<Board> baords = new ArrayList<Board>();
+        	baords.add(new Board(0,"title","content","author","test.png"));
+        	baords.add(new Board(0,"title","content","author","test.png"));
+        	request.setAttribute("posts", baords);
+            request.getRequestDispatcher("board/boardMain.jsp").forward(request, response);
+            return;
+        }else if(action.startsWith("/edit/")) {
+        	// 현재 수정할 페이지의 내용을 jsp에게 넘겨줌
+        	int boardId = Integer.parseInt(action.substring(6));
+        	System.out.println("board edit id="+String.valueOf(boardId));
+        	
+        	
         }
-
-        request.setAttribute("posts", posts);
-        request.getRequestDispatcher("board.jsp").forward(request, response);
+        request.getRequestDispatcher("/board/boardForm.jsp").forward(request, response);
+        
     }
 
-    // 게시글 작성
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String author = request.getParameter("author"); // 토큰에서 추출한 작성자 ID 사용
+        
+        // 게시판 글 추가 로직
+        response.sendRedirect(request.getContextPath() + "/BoardPage");
+    }
 
-        String sql = "INSERT INTO board (title, content, author) VALUES (?, ?, ?)";
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        // 게시판 글 수정 로직
+        response.sendRedirect(request.getContextPath() + "/BoardPage");
+    }
 
-            pstmt.setString(1, title);
-            pstmt.setString(2, content);
-            pstmt.setString(3, author);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
 
-        response.sendRedirect("Board"); // 게시글 목록으로 리다이렉트
+        // 게시판 글 삭제 로직
+        response.sendRedirect(request.getContextPath() + "/BoardPage");
     }
 }

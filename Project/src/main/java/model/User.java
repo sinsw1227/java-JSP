@@ -5,9 +5,12 @@ public class User {
 	private String authority; // "user" / "admin"
 	private String key;
 	
-	//check id passwd  >> login 
-	public User() {
+	public boolean isAdmin() {
+		return authority.equals("admin");
 	}
+	
+	//check id passwd  >> login 
+	public User() {}
 	
 	// create User
 	public User(String id, String passwd, String name, String email) {

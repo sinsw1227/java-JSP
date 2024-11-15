@@ -45,12 +45,7 @@ public class TokenService {
             response.addCookie(cookie);  // Add the cookie with the modified attributes
             e.printStackTrace();
             return null;
-			
 		}
-	}
-	
-	public void EraseCookie() {
-		
 	}
 	
 	public static String getSecretKey() {

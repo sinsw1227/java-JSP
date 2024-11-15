@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.Post" %>
+<%@ page import="model.Board" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,7 +20,7 @@
         <label for="content">내용:</label>
         <textarea id="content" name="content" required></textarea>
         <br>
-        <input type="hidden" name="author" value="<%= request.getSession().getAttribute("name") %>">
+        <input type="hidden" name="author" value="<%=request.getSession().getAttribute("name")%>">
         <button type="submit">게시글 작성</button>
     </form>
 
@@ -36,9 +36,9 @@
         </thead>
         <tbody>
             <%
-                List<Post> posts = (List<Post>) request.getAttribute("posts");
-                if (posts != null) {
-                    for (Post post : posts) {
+            List<Board> posts = (List<Board>) request.getAttribute("posts");
+                            if (posts != null) {
+                                for (Board post : posts) {
             %>
                 <tr>
                     <td><%= post.getId() %></td>

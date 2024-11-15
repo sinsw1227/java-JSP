@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="model.Post" %>
+<%@ page import="model.Board" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,9 +11,9 @@
     <h1>게시글 상세 보기</h1>
     
     <%
-        Post post = (Post) request.getAttribute("post");
-        if (post != null) {
-    %>
+        Board post = (Board) request.getAttribute("post");
+                if (post != null) {
+        %>
         <h2><%= post.getTitle() %></h2>
         <p><strong>작성자:</strong> <%= post.getAuthor() %></p>
         <p><strong>작성일:</strong> <%= post.getCreatedAt() %></p>

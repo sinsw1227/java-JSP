@@ -26,7 +26,7 @@ public class BoardImageTestController extends HttpServlet {
 		System.out.println("BoardImageTestPage : post");
 		
 		Part inputPart = request.getPart("file");
-		fileService.saveFile(inputPart, getServletContext());
+		fileService.saveFile((String)getServletContext().getAttribute("imgURL"),inputPart);
 		
 		// 결과 출력
         response.getWriter().println("<h1>success upload</h1>");

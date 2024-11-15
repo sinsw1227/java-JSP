@@ -8,10 +8,9 @@ import jakarta.servlet.http.Part;
 import repository.FileRepository;
 
 public class FileService {
-	public boolean saveFile(Part inputPart, ServletContext context) {
+	public boolean saveFile(String imgURL, Part inputPart) {
 		String inputFileName = getFileName(inputPart);
-		String imgURL = (String) context.getAttribute("imgURL");
-		String imgURI = getFilePath(imgURL, context);
+		String imgURI = getFilePath(imgURL);
 		
 		try {
 			inputPart.write(imgURL + imgURI);
@@ -27,11 +26,22 @@ public class FileService {
 		return true;
 	}
 	
-	public boolean isExists() {
-		return false;
+	public boolean removeImg(String imgURL, String imgURI) {
+		try {
+			File oldImg = new File(imgURI);
+			oldImg.delete();
+		}catch(Exception e) {
+			System.out.println("FileService >> removeImg() fail uri:"+imgURI);
+			e.printStackTrace();
+			return false;
+		}
+		System.out.println("FileService >> removeImg() success uri:"+imgURI);
+		return true;
+		
+		new FileRepository().removeImage();
 	}
 	
-	private String getFilePath(String imgURL, ServletContext context) {
+	private String getFilePath(String imgURL) {
 		String imgURIFormat = "board%d.png";
 		for(int i = 0; i < 100; i++) {
 			String imgURI = String.format(imgURIFormat, i);

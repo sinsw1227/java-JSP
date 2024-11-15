@@ -18,7 +18,7 @@
     	// 토큰이 유효한지 확인
     	TokenService tokenService = new TokenService();
 		User user = tokenService.check(request, response);
-		if( user != null){
+		if(user != null){
 			%>
 			alert("already login")
 			window.location = "/Project/MainPage" //이전 화면으로 되돌리기 변경 필요
