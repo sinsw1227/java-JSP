@@ -12,12 +12,15 @@ public class Board {
  private java.sql.Timestamp createdAt;
  	public Board() {}
  	
+	public Board(int id, String title, String content) {
+		this.id = id;
+		this.title = title;
+		this.content = content;
+	}
 	public Board(String title, String content) {
 		this.title = title;
 		this.content = content;
 	}
-
-
 	public String getImgURI() {
 		return imgURI;
 	}

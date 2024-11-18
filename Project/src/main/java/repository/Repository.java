@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Repository {
 	public Connection getConnection() {
@@ -19,7 +20,7 @@ public class Repository {
 		}
     }
 	
-	public void disconnect(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+	public void disconnect(Connection conn, Statement pstmt, ResultSet rs) {
         try {
             if (rs != null) rs.close();
             if (pstmt != null) pstmt.close();
@@ -29,7 +30,7 @@ public class Repository {
         }
     }
 	
-	public void disconnect(Connection conn, PreparedStatement pstmt) {
+	public void disconnect(Connection conn, Statement pstmt) {
         try {
             if (pstmt != null) pstmt.close();
             if (conn != null) conn.close();

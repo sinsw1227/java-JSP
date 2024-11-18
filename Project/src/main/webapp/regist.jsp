@@ -88,6 +88,7 @@
 <body>
     <h1>회원가입</h1>
     <form onsubmit="sendEmail(event)">
+    <input type="hidden" name="_method" value="PUT"/>
         아이디 : <input type="text" name="id" required> <br>
         비밀번호 : <input type="password" name="password" required> <br>
         이름 : <input type="text" name="name" required><br>
