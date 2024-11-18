@@ -4,29 +4,25 @@ import java.sql.Timestamp;
 
 //게시글 클래스
 public class Board {
- private int id;
+ private int id; // generate created
  private String title;
  private String content;
- private String author;
- private String imgURL;
+ private String userName; // String userId
+ private String imgURI; // int imgId
  private java.sql.Timestamp createdAt;
  	public Board() {}
  	
-	public Board(int id, String title, String content, String author, String imgURL) {
-		this.id = id;
+	public Board(String title, String content) {
 		this.title = title;
 		this.content = content;
-		this.author = author;
-		this.imgURL = imgURL;
-		this.createdAt = new java.sql.Timestamp(50);
 	}
 
 
-	public String getImgURL() {
-		return imgURL;
+	public String getImgURI() {
+		return imgURI;
 	}
-	public void setImgURL(String imgURL) {
-		this.imgURL = imgURL;
+	public void setImgURI(String imgURL) {
+		this.imgURI = imgURL;
 	}
 	public int getId() {
 		return id;
@@ -46,11 +42,11 @@ public class Board {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getAuthor() {
-		return author;
+	public String getUserName() {
+		return userName;
 	}
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setUserName(String author) {
+		this.userName = author;
 	}
 	public java.sql.Timestamp getCreatedAt() {
 		return createdAt;

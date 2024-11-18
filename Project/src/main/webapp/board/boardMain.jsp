@@ -14,7 +14,7 @@ String path = request.getContextPath();
 <body>
 <h1>게시판 목록</h1>
 
-<a href="<%=path%>/board/add">게시글 추가</a>
+<a href="BoardPage/create">게시글 추가</a>
 
 <table border="1">
     <tr>
@@ -35,9 +35,9 @@ String path = request.getContextPath();
     %>
     <tr>
         <td><%= post.getTitle() %></td>
-        <td><%= post.getAuthor() %>
+        <td><%=post.getUserName()%>
         <td><%= post.getContent() %></td>
-        <td><img src="<%=path+"/images/"+post.getImgURL()%>"/></td>
+        <td><img src="<%=path+"/images/"+post.getImgURI()%>"/></td>
         <td>
             <a href="<%= path + "/board/edit/" + post.getId() %>">수정</a>
             <form action="<%=path%>/board/<%=post.getId()%>" method="delete"> <button type="submit">삭제</button> </form>

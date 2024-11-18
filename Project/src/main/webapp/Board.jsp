@@ -43,7 +43,7 @@
                 <tr>
                     <td><%= post.getId() %></td>
                     <td><a href="ViewPost?id=<%= post.getId() %>"><%= post.getTitle() %></a></td>
-                    <td><%= post.getAuthor() %></td>
+                    <td><%=post.getUserId()%></td>
                     <td><%= post.getCreatedAt() %></td>
                 </tr>
             <%

@@ -34,7 +34,9 @@
                 if (response.ok) {
                     alert('인증 이메일을 발송했습니다. 이메일을 확인하세요.');
                     document.querySelector('#emailKeySection').style.display = 'block'; // 이메일 키 입력 섹션 표시
-                } else {
+                } else if(response.status === 400){
+                	alert("중복된 id입니다");
+                } else{
                     alert('이메일 발송 중 오류가 발생했습니다. 다시 시도해주세요.');
                 }
             } catch (error) {

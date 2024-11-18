@@ -19,7 +19,15 @@ public class TokenService {
 	private LoginRepository loginRepository;
 	public TokenService() {loginRepository = new LoginRepository(); }
 	
-	public User check(HttpServletRequest request, HttpServletResponse response) {
+	public User getUserFromToken(HttpServletRequest request, HttpServletResponse response) {
+		Optional<User> user = loginRepository.getUserById(getUserIdFromToken(request, response)); //User 검증 , User 존재시 true, 없으면 false
+		if(!user.isPresent())
+			return null;
+		
+		return user.get();
+	}
+	
+	public String getUserIdFromToken(HttpServletRequest request, HttpServletResponse response) {
 		System.out.print("TokenService check() >> ");
 		try {
 			Optional<Cookie> token = Arrays.stream(request.getCookies()).filter(c->{return c.getName().equals("token");}).findAny();
@@ -30,12 +38,10 @@ public class TokenService {
 					.parseClaimsJws(token.get().getValue())
 					.getBody();
 		
-			Optional<User> user = loginRepository.getUserById(claims.getSubject()); //User 검증 , User 존재시 true, 없으면 false
-			return user.get();
+			return claims.getSubject();
 		} catch(NullPointerException | NoSuchElementException e) {
 			System.out.println("no token");
-			return null;
-		} catch(Exception e) {
+		}catch(Exception e) {
 			//e.printStackTrace();
 			System.out.println("strange token => erase token");
 			Cookie cookie = new Cookie("token", "");
@@ -44,8 +50,8 @@ public class TokenService {
             cookie.setPath("/");    // Ensure it matches the original path
             response.addCookie(cookie);  // Add the cookie with the modified attributes
             e.printStackTrace();
-            return null;
 		}
+		return null;
 	}
 	
 	public static String getSecretKey() {

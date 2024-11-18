@@ -110,9 +110,9 @@
 
     <header>
     	<%
-		TokenService tokenService = new TokenService();
-    	User user = tokenService.check(request, response);
-    	if(user != null){
+    	TokenService tokenService = new TokenService();
+    	    	User user = tokenService.getUserFromToken(request, response);
+    	    	if(user != null){
     	%>
             <span class="username"><%= user.getName() %>님</span>
             <div class="username" onClick=eraseCookie()>로그아웃</div>

@@ -15,7 +15,7 @@
                 if (post != null) {
         %>
         <h2><%= post.getTitle() %></h2>
-        <p><strong>작성자:</strong> <%= post.getAuthor() %></p>
+        <p><strong>작성자:</strong> <%=post.getUserId()%></p>
         <p><strong>작성일:</strong> <%= post.getCreatedAt() %></p>
         <hr>
         <p><%= post.getContent() %></p>

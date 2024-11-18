@@ -14,12 +14,10 @@
 </head>
 <script>
 	
-	<%
-    	// 토큰이 유효한지 확인
+	<%// 토큰이 유효한지 확인
     	TokenService tokenService = new TokenService();
-		User user = tokenService.check(request, response);
-		if(user != null){
-			%>
+		User user = tokenService.getUserFromToken(request, response);
+		if(user != null){%>
 			alert("already login")
 			window.location = "/Project/MainPage" //이전 화면으로 되돌리기 변경 필요
         	<%
@@ -41,7 +39,7 @@
 		<button class="btn btn-default" onclick="onSignIn">구글인증하기</button>
 	</div>
 	
-	<a href="Regist">regist</a>
+	<a href="RegistPage">regist</a>
 	
 	<script>
 	// 로그인 폼을 비동기로 처리하는 함수

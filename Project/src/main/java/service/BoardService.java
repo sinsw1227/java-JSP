@@ -1,39 +1,56 @@
 package service;
 
+import java.util.ArrayList;
+
+import jakarta.servlet.http.Part;
 import model.Board;
 import model.User;
 import repository.BoardRepository;
+import repository.FileRepository;
+import repository.LoginRepository;
 
 public class BoardService {
 	BoardRepository repository = new BoardRepository();
 	
-	public void createBoard(Board board, User user) {
-		//img 생성
-		// update img db
-		
-		// update board db
+	public void createBoard(Board board, String userId,int imgId) {	
+		repository.create(board,userId, imgId);
 	}
 	
-	public boolean removeBoard(int boardId, User user) {
+	public boolean removeBoard(int boardId, String imgURL, User user) {
+		Board board = repository.getBoard(boardId);
+		
 		if(isSameUserId(boardId, user))
 			return false;
 		
-		// remove img
+		//get imgId from Board database
+		int imgId = repository.getImgIdWithBoardId(boardId);
 		
+		new FileService().removeImg(imgURL, imgId);
 		repository.remove(boardId);
+		
+		return true;
 	}
 	
-	public boolean updateBoard(Board board, User user) {
-		if(isSameUserId(board, user))
+	public boolean updateBoard(Board board, User user, String imgURL,Part inputPart) {
+		if(isSameUserId(board.getId(), user))
 			return false;
 		
-		// create new img
-		// update img db
+		int boardId = board.getId();
+		FileRepository fileRepository = new FileRepository();
+		FileService fileService = new FileService();
 		
-		repository.update(board, user);
+		String oldUserId = repository.getUserIdWithBoardId(boardId);
+		if(!(oldUserId.equals(user.getId()) && user.isAdmin()))
+			return false;
+		
+		int oldImgId = repository.getImgIdWithBoardId(boardId);
+		
+		int newImgId = fileService.updateImg(imgURL, oldImgId, inputPart);
+		
+		return repository.update(board, user.getId(), newImgId);
 	}
 	
 	private boolean isSameUserId(int boardId, User user) {
-		return !(repository.checkUserId() || user.isAdmin());
+		return !(repository.getUserIdWithBoardId(boardId).equals(user.getId()) || user.isAdmin());
 	}
 }

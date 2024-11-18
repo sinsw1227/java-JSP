@@ -8,7 +8,11 @@ import jakarta.servlet.http.Part;
 import repository.FileRepository;
 
 public class FileService {
-	public boolean saveFile(String imgURL, Part inputPart) {
+	private FileRepository repository;
+	
+	public FileService() { repository = new FileRepository(); }
+	
+	public int saveFile(String imgURL, Part inputPart) {
 		String inputFileName = getFileName(inputPart);
 		String imgURI = getFilePath(imgURL);
 		
@@ -18,27 +22,28 @@ public class FileService {
 		} catch (IOException e) {
 			System.out.println("FileService >> saveFile() >> [ERROR] : save fail !!");
 			e.printStackTrace();
-			return false;
+			return -1;
 		}
 		
-		new FileRepository().insertImage(imgURI);
-		
-		return true;
+		return repository.insertImage(imgURI);
 	}
 	
-	public boolean removeImg(String imgURL, String imgURI) {
+	public void removeImg(String imgURL, int imgId) {
+		String imgURI = repository.getURI(imgId);
 		try {
 			File oldImg = new File(imgURI);
 			oldImg.delete();
 		}catch(Exception e) {
 			System.out.println("FileService >> removeImg() fail uri:"+imgURI);
 			e.printStackTrace();
-			return false;
 		}
+		repository.removeImage(imgId);
 		System.out.println("FileService >> removeImg() success uri:"+imgURI);
-		return true;
-		
-		new FileRepository().removeImage();
+	}
+	
+	public int updateImg(String imgURL, int oldImgId, Part inputPart) {
+		removeImg(imgURL, oldImgId);
+		return saveFile(imgURL, inputPart); // return created new img id
 	}
 	
 	private String getFilePath(String imgURL) {

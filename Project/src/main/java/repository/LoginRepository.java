@@ -8,19 +8,14 @@ import java.util.Optional;
 
 import model.User;
 
-public class LoginRepository {
+public class LoginRepository extends Repository{
     private Connection conn;
-    private Repository repository;
-    
-    public LoginRepository(){
-    	repository = new Repository();
-    }
     // 회원 추가
     // SQL: INSERT INTO user (id, passwd, name, authority, email) VALUES (?, ?, ?, ?, ?);
     public boolean addUser(User user) {
         boolean re = false;
         try {
-            conn = repository.getConnection();
+            conn = getConnection();
             PreparedStatement statement = conn.prepareStatement("INSERT INTO user (id, passwd, name, authority, email) VALUES (?, ?, ?, ?, ?);");
             statement.setString(1, user.getId());
             statement.setString(2, user.getPasswd());
@@ -45,7 +40,7 @@ public class LoginRepository {
     public Optional<User> getUserById(String id) {
         Optional<User> user = Optional.empty();
         try {
-        	conn = repository.getConnection();
+        	conn = getConnection();
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM user WHERE id = ?;");
             statement.setString(1, id);
             
