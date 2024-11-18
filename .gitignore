@@ -1,10 +1,8 @@
-# eclipse 
-.metadata
-!Project/**
-.settings/
-*.log
-*.class
-.classpath
-.project
+*
 
-WebProjectClass/
+!.gitignore
+!README.md
+!api 명세서.txt
+!Project
+!Project/src
+!Project/src/**
