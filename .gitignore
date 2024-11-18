@@ -1,6 +1,6 @@
 # eclipse 
 .metadata
-Servers/
+!Project/**
 .settings/
 *.log
 *.class
