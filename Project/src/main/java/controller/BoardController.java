@@ -24,7 +24,6 @@ public class BoardController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getPathInfo();
-        
         System.out.println("BoardPage get() >> action:"+action);
         
         if (action == null || action.equals("/")) {
@@ -35,7 +34,11 @@ public class BoardController extends HttpServlet {
         }else if(action.startsWith("/edit/")) {
         	// 현재 수정할 페이지의 내용을 jsp에게 넘겨줌
         	int boardId = Integer.parseInt(action.substring(6));
-        	System.out.println("board edit id="+String.valueOf(boardId));
+        	Board board = new BoardRepository().getBoard(boardId);
+        	System.out.println("board get()>> return board edit jsp id="+String.valueOf(boardId));
+        	request.setAttribute("title", board.getTitle());
+        	request.setAttribute("content", board.getContent());
+        	request.setAttribute("id", (Integer)board.getId());
         }
         
         request.getRequestDispatcher("/board/boardForm.jsp").forward(request, response);
@@ -45,12 +48,28 @@ public class BoardController extends HttpServlet {
     // new Board create : 동기 html form 태그 형식
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	String method = request.getParameter("_method");
+    	if(method.equals("put")) {
+    		doPut(request, response);
+    		return;
+    	}else if( method.equals("delete")) {
+    		doDelete(request, response);
+    		return;
+    	}
+    	
         System.out.println("Board Post(create) >> save img and update Board db");
     	//get User from token
         String userId = new TokenService().getUserIdFromToken(request, response);
+        if(userId == null || userId.isBlank()) {
+        	System.out.println("no token => return alertPage.jsp");
+        	request.setAttribute("error", "로그인 정보가 없습니다");
+        	request.getRequestDispatcher("alertPage.jsp").forward(request, response);
+        	return ;
+        }
         
         // input img 저장
-        Part inputPart = request.getPart("file");
+        Part inputPart = request.getPart("img");
+        
     	int imgId = new FileService().saveFile((String)getServletContext().getAttribute("imgURL"), inputPart);
     	
     	// board 만들기 + get userId
@@ -64,17 +83,18 @@ public class BoardController extends HttpServlet {
     // update Board
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	System.out.println("Board Put(update) >> save new img again and update Board db");
+    	int baordId = Integer.parseInt(request.getParameter("id"));
+    	System.out.println("Board Put(update) >> save new img again and update Board db BoardId="+String.valueOf(baordId));
     	//get User from token
         User user = new TokenService().getUserFromToken(request, response);
         if(user == null) {
         	return;
         }
         
-        Part inputPart = request.getPart("file");
+        Part inputPart = request.getPart("img");
     	
     	// board 만들기 + get userId
-    	Board newBoard = new Board(request.getParameter("title"), request.getParameter("content"));
+    	Board newBoard = new Board(baordId,request.getParameter("title"), request.getParameter("content"));
     	
     	new BoardService().updateBoard(newBoard, user, (String)getServletContext().getAttribute("imgURL"), inputPart);
         
@@ -87,7 +107,9 @@ public class BoardController extends HttpServlet {
        System.out.println("Board delete(delete) >> get boardId, userId form token check same id and try delete Board");
        
        User inputUser = new TokenService().getUserFromToken(request, response);
-       int boardId = (int) request.getAttribute("boardId");// 해당 부분 수정 필요 url에서 get하는 방식으로
+       
+       String action = request.getPathInfo(); // /Project/BoardPage/3
+       int boardId = Integer.parseInt(action.substring(1));// 해당 부분 수정 필요 url에서 get하는 방식으로
        
        new BoardService().removeBoard(boardId, (String)getServletContext().getAttribute("imgURL"), inputUser);
    

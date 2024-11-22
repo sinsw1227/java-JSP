@@ -39,8 +39,11 @@ String path = request.getContextPath();
         <td><%= post.getContent() %></td>
         <td><img src="<%=path+"/images/"+post.getImgURI()%>"/></td>
         <td>
-            <a href="<%= path + "/board/edit/" + post.getId() %>">수정</a>
-            <form action="<%=path%>/board/<%=post.getId()%>" method="delete"> <button type="submit">삭제</button> </form>
+            <a href="<%= path + "/BoardPage/edit/" + post.getId() %>">수정</a>
+            <form action="<%=path%>/BoardPage/<%=post.getId()%>" method="POST">
+            	<input type="hidden" name="_method" value="delete"/>
+            	<button type="submit">삭제</button>
+            </form>
         </td>
         <td> <%= post.getCreatedAt() %></td>
     </tr>

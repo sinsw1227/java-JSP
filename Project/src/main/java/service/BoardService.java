@@ -32,11 +32,10 @@ public class BoardService {
 	}
 	
 	public boolean updateBoard(Board board, User user, String imgURL,Part inputPart) {
-		if(isSameUserId(board.getId(), user))
+		int boardId = board.getId();
+		if(isSameUserId(boardId, user))
 			return false;
 		
-		int boardId = board.getId();
-		FileRepository fileRepository = new FileRepository();
 		FileService fileService = new FileService();
 		
 		String oldUserId = repository.getUserIdWithBoardId(boardId);
@@ -47,7 +46,12 @@ public class BoardService {
 		
 		int newImgId = fileService.updateImg(imgURL, oldImgId, inputPart);
 		
-		return repository.update(board, user.getId(), newImgId);
+		if(!repository.update(board, user.getId(), newImgId)) {
+			System.out.println("BoardService >> updateBoard() >> repository.update() >> fail");
+			return false;
+		}
+		System.out.println("BoardService >> updateBoard() >> success");
+		return true;
 	}
 	
 	private boolean isSameUserId(int boardId, User user) {

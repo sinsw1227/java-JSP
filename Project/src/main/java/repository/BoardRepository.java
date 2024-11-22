@@ -9,9 +9,8 @@ public class BoardRepository extends Repository {
 
     public ArrayList<Board> getBoardList() {
         String sql = "SELECT b.id, b.title, b.content, u.name AS userName, i.uri AS imgURI, b.created_at " +
-                     "FROM board b " +
-                     "JOIN user u ON b.userId = u.id " +
-                     "LEFT JOIN img i ON b.imgId = i.id";
+                     "FROM board b, user u, img i " +
+                     "where b.userId = u.id and i.id = b.imgId";
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -134,21 +133,23 @@ public class BoardRepository extends Repository {
             
             disconnect(conn, pstmt);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("BoardRepository >> update >> fail" + e.getMessage());
             disconnect(conn, pstmt);
             return false;
         }
+        disconnect(conn, pstmt);
+        System.out.println("BoardRspository >> update >> success");
         return true;
     }
 
     // Retrieve the user ID associated with a specific board ID
     public String getUserIdWithBoardId(int boardId) {
+    	//System.out.println("BoardRepository >> getUserIdWuthBoardId() boardId="+String.valueOf(boardId));
         String sql = "SELECT userId FROM board WHERE id = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         String userId = null;
-
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -157,13 +158,12 @@ public class BoardRepository extends Repository {
 
             if (rs.next()) {
                 userId = rs.getString("userId");
+                System.out.println("BoardRepository > getUserIdWithBoardId() >> success userId =" +userId);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            disconnect(conn, pstmt, rs);
-        }
-
+        } 
+        disconnect(conn, pstmt, rs);
         return userId;
     }
 

@@ -4,22 +4,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class FileRepository extends Repository{
 	private Connection conn;
 	
 	public int insertImage(String imgURI) {
 		conn = getConnection();
-        String query = "INSERT INTO img (uri) VALUES (?)";
+        String query = "INSERT INTO img(uri) VALUES (?)";
         int imgId = -1;
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, imgURI);
-            int affectedCount = pstmt.executeUpdate();
             
-            if(affectedCount > 0) {
+            if(pstmt.executeUpdate() > 0) {
             	ResultSet resultset = pstmt.getGeneratedKeys();
             	if(resultset.next())
-            		imgId = resultset.getInt("id");
+            		imgId = resultset.getInt(1);
             }
             
             System.out.println("FileRepository >> insertImage() >> success generated imgId:"+imgId);
@@ -70,5 +70,26 @@ public class FileRepository extends Repository{
             e.printStackTrace();
         }
         disConnection(conn);
+    }
+    
+    private void sortImgId() {
+    	conn = getConnection();
+    	String sqls = "ALTER TABLE img AUTO_INCREMENT = 1;,"
+    				+ "SET @COUNT = 0;,"
+    				+ "UPDATE img SET id = @COUNT := @COUNT + 1;";
+    	Statement stmt = null;
+    	try {
+			stmt = conn.createStatement();
+			for(String sql : sqls.split(",")) {
+				stmt.execute(sql);
+			}
+		} catch (SQLException e) {
+			System.out.println("FileService >> sortImgId() :: fail >> cannot sort primary key imgId");
+			e.printStackTrace();
+		}finally{
+			disconnect(conn, stmt);
+		}
+    	
+    	System.out.println("FileService >> sortImgId() :: success >> sorted primary key imgId");
     }
 }
